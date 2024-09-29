@@ -22,7 +22,7 @@ class Question(models.Model):
     description = models.TextField()
     difficulty = models.CharField(max_length=10, choices=DIFFICULTY_CHOICES)
     recommended_time = models.IntegerField(blank= False)
-    inputs = JSONField(defualt=list,null=True,Blank=True)
+    inputs = JSONField(default=list,null=True,blank=True)
     starter_code = models.TextField(blank = False)
     created_at = models.DateTimeField(auto_now_add=True)
     tscore = models.IntegerField(default = 0)
@@ -83,7 +83,7 @@ class TestCase(models.Model):
 
 
 class Clients(models.Model):
-    isAdmin = models.BooleanField(db_column="IsAdmin",null=False,defualt=False)
+    isAdmin = models.BooleanField(db_column="IsAdmin",null=False,default=False)
     password = models.CharField(db_column="Password",max_length=250,null=False)
     firstname = models.CharField(db_column="FirstName",max_length=100,null=False,default='')
     lastname = models.CharField(db_column="LastName",max_length=100,null=False,default='')

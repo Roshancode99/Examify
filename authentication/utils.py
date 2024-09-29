@@ -1,11 +1,11 @@
 from django.contrib.auth.hashers import make_password , check_password
-from myapp.models import Client
+from myapp.models import Clients
 from django.forms.models import model_to_dict
 
 
 def createUser(data):
-    password = data.get('password')
-    new_client = Client(
+    password = make_password(data.get('password'))
+    new_client = Clients(
         isAdmin = data.get('isAdmin' , False),
         password = password,
         firstname = data.get('firstname'),
