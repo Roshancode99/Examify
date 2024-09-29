@@ -5,6 +5,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse , JsonResponse
 import json
 from django.core.exceptions import ValidationError
+from myapp.models import Clients
 
 
 # Create your views here.
@@ -33,3 +34,14 @@ def register(request):
             msg["message"]=str(e)
             return JsonResponse(data=msg , safe=False,status=500)
 
+def getAllUsers(request):
+    msg={"success":False,"message": ""}
+    if request.method == 'GET':
+        try:
+            data = Clients.objects.all()
+            print("this is should be object as the orm sqlalchemy" , data)
+            data = data.values('isAdmin','firstname','lastname','email','isdisabled','createddate','updatedate')
+            return JsonResponse(list(data),safe=False,status=200)
+        except Exception as e:
+            msg["message"]=str(e)
+            return JsonResponse(msg,safe=False,status=500)
