@@ -3,9 +3,11 @@ from django.views.decorators.csrf import csrf_exempt
 from .utils import createUser , checkPassword , createSession , getUsersProfile , logout
 from django.db import IntegrityError
 from django.http import HttpResponse , JsonResponse
-import json
+import json , time
 from django.core.exceptions import ValidationError , ObjectDoesNotExist
 from myapp.models import Clients
+from .decorators import checkSession , admin_required
+from rest_framework import status
 
 
 # Create your views here.
@@ -107,3 +109,21 @@ def auth(request):
        
     return JsonResponse(msg,safe=False,status=500)
 
+@csrf_exempt
+@checkSession
+def checkSession(request):
+    msg={"success":True,"message":"ok"}
+    return JsonResponse(msg,safe=False,status=200)
+
+
+@csrf_exempt
+@admin_required
+def dummyfunction(request):
+    msg={"status":"","errorCode":"","message":"","result":"","transactionID":0,"redirectURL":"","httpStatus":status.HTTP_200_OK}
+    print(time.time())
+    msg['transactionID']=time.time()
+    if request.method == 'POST':
+        msg["status"]="success"
+        msg["result"]="Hurray you are admin"
+        msg["httpStatus"]=200
+        return JsonResponse(msg,safe=False,status=msg["httpStatus"])
